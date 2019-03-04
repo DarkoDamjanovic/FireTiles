@@ -15,7 +15,7 @@ import Firebase
 /// it is guaranteed that the initialization happened before usage of any Firebase service.
 class FirebaseConfig {
     init() {
-        let firebaseConfig = Bundle.main.path(forResource: "GoogleService-Info-Development", ofType: "plist")!
+        let firebaseConfig = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
         guard let options = FirebaseOptions(contentsOfFile: firebaseConfig) else {
             fatalError("Invalid Firebase configuration file.")
         }
