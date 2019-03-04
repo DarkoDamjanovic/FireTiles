@@ -46,7 +46,7 @@ extension FirestoreService: FirestoreServiceProtocol {
         }
     }
     
-    func fillTestData() {
+    func generateTestData() {
         for _ in 1...500 {
             var document = [String: Any]()
             document["location"] = GeoPoint(latitude: 0, longitude: 0)
