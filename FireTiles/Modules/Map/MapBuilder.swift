@@ -20,7 +20,7 @@ class MapBuilder {
     func build() -> UIViewController {
         let view = MapViewController.storyboardInstance()
         let navigator = MapNavigator(view: view, dependencyContainer: self.dependencyContainer)
-        let presenter = MapPresenter(view: view, navigator: navigator)
+        let presenter = MapPresenter(view: view, navigator: navigator, firestoreService: self.dependencyContainer.firestoreService)
         view.presenter = presenter
         return view
     }

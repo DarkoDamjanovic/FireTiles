@@ -17,14 +17,23 @@ class MapPresenter {
     private let log = Logger()
     private unowned let view: MapViewControllerProtocol
     private let navigator: MapNavigatorProtocol
+    private let firestoreService: FirestoreServiceProtocol
     
-    private let initialLocation = CLLocation(latitude: 40.0, longitude: -100.0)
-    private let initialDistance = CLLocationDistance(exactly: 1000000)!
+    private let initialLocation = CLLocation(latitude: 37.74520008, longitude: -122.4464035)
+    private let initialDistance = CLLocationDistance(exactly: 15000)!
+    
+    private var locations = [CLLocation]()
     
     init(view: MapViewControllerProtocol,
-         navigator: MapNavigatorProtocol) {
+         navigator: MapNavigatorProtocol,
+         firestoreService: FirestoreServiceProtocol) {
         self.view = view
         self.navigator = navigator
+        self.firestoreService = firestoreService
+    }
+    
+    private func drawAnnotations() {
+        
     }
     
     deinit {
@@ -35,5 +44,9 @@ class MapPresenter {
 extension MapPresenter: MapPresenterProtocol {
     func viewDidLoad() {
         self.view.centerMapOnLocation(location: self.initialLocation, distance: self.initialDistance)
+        self.firestoreService.generateTestDataOnce()
+        self.firestoreService.downloadTestDataOnce { [weak self] locations in
+            self?.locations = locations
+        }
     }
 }

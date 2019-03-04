@@ -7,20 +7,26 @@
 //
 
 import Foundation
+import CoreLocation
 
 import Firebase
 import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
-    func testDb()
+    func generateTestDataOnce()
+    func downloadTestDataOnce(completion: @escaping ([CLLocation]) -> ())
 }
 
 class FirestoreService {
     // swiftlint:disable:next identifier_name
     private let db: Firestore
     private let log = Logger()
+    private let userDefaults: UserDefaults
     
-    init(config: FirebaseConfig) {
+    init(config: FirebaseConfig,
+         userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+        
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
         
@@ -46,10 +52,38 @@ extension FirestoreService: FirestoreServiceProtocol {
         }
     }
     
-    func generateTestData() {
-        for _ in 1...500 {
+    func generateTestDataOnce() {
+        guard userDefaults.bool(forKey: "testdata_already_written") == false else { return }
+        userDefaults.set(true, forKey: "testdata_already_written")
+        
+        let ref = db.collection("Restaurants")
+        for _ in 1...100 {
+            let latRandom = Double.random(in: 37.65460531...37.78211206)
+            let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
+            
             var document = [String: Any]()
-            document["location"] = GeoPoint(latitude: 0, longitude: 0)
+            document["location"] = GeoPoint(latitude: latRandom, longitude: longRandom)
+            ref.addDocument(data: document)
+        }
+    }
+    
+    func downloadTestDataOnce(completion: @escaping ([CLLocation]) -> ()) {
+        db.collection("Restaurants").getDocuments { [weak self] (snapshot, error) in
+            if let error = error {
+                self?.log.error("Error getting documents: \(error)")
+            } else {
+                var locations = [CLLocation]()
+                for document in snapshot!.documents {
+                    self?.log.info("\(document.documentID) => \(document.data())")
+                    
+                    let location = document.data()
+                    if let geoPoint = location["location"] as? GeoPoint {
+                        let clLocation = CLLocation(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+                        locations.append(clLocation)
+                    }
+                }
+                completion(locations)
+            }
         }
     }
 }
