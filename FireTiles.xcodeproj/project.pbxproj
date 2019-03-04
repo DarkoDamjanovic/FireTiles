@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		64EE225C0B20DBECBBBA6CBC /* Pods_FireTilesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBCC152336AA6E3E201051E /* Pods_FireTilesTests.framework */; };
 		79D14093C22E257CAFCAC7D7 /* Pods_FireTilesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E6AA6B73F6C892238CC2476 /* Pods_FireTilesUITests.framework */; };
+		A2022F15222EEDE600FBF107 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F14222EEDE600FBF107 /* Place.swift */; };
+		A2022F17222EF0E300FBF107 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F16222EF0E300FBF107 /* Annotation.swift */; };
+		A2022F19222EF43600FBF107 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F18222EF43600FBF107 /* AnnotationView.swift */; };
+		A2022F1C222EFE2500FBF107 /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F1B222EFE2500FBF107 /* FireTile.swift */; };
+		A28FE724222FCBAC00AF48C0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A28FE723222FCBAC00AF48C0 /* README.md */; };
 		A2AE4309222D542F00DD38A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */; };
 		A2AE430B222D550300DD38A3 /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430A222D550300DD38A3 /* Navigatable.swift */; };
 		A2AE430D222D557900DD38A3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430C222D557900DD38A3 /* Extensions.swift */; };
@@ -58,6 +63,11 @@
 		68013831770ED43DCEB972F2 /* Pods-FireTilesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireTilesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FireTilesUITests/Pods-FireTilesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8E6AA6B73F6C892238CC2476 /* Pods_FireTilesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FireTilesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99D5425747643ECB700944D3 /* Pods-FireTiles.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireTiles.release.xcconfig"; path = "Pods/Target Support Files/Pods-FireTiles/Pods-FireTiles.release.xcconfig"; sourceTree = "<group>"; };
+		A2022F14222EEDE600FBF107 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		A2022F16222EF0E300FBF107 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		A2022F18222EF43600FBF107 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
+		A2022F1B222EFE2500FBF107 /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
+		A28FE723222FCBAC00AF48C0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A2AE430A222D550300DD38A3 /* Navigatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
 		A2AE430C222D557900DD38A3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -142,9 +152,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A2022F13222EED9500FBF107 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A2022F14222EEDE600FBF107 /* Place.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A2022F1A222EF45B00FBF107 /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				A2022F16222EF0E300FBF107 /* Annotation.swift */,
+				A2022F18222EF43600FBF107 /* AnnotationView.swift */,
+			);
+			path = Annotations;
+			sourceTree = "<group>";
+		};
+		A28FE722222FCB9700AF48C0 /* Readme */ = {
+			isa = PBXGroup;
+			children = (
+				A28FE723222FCBAC00AF48C0 /* README.md */,
+			);
+			name = Readme;
+			sourceTree = "<group>";
+		};
 		A2AE430E222D55E500DD38A3 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				A2022F1A222EF45B00FBF107 /* Annotations */,
 				A2AE4312222D55FE00DD38A3 /* MapBuilder.swift */,
 				A2AE4310222D55FE00DD38A3 /* MapNavigator.swift */,
 				A2AE4311222D55FE00DD38A3 /* MapPresenter.swift */,
@@ -180,7 +216,9 @@
 			isa = PBXGroup;
 			children = (
 				A2D63890222D525C001C5D37 /* App */,
+				A28FE722222FCB9700AF48C0 /* Readme */,
 				A2D63891222D5274001C5D37 /* Resources */,
+				A2022F13222EED9500FBF107 /* Models */,
 				A2D638A1222D536C001C5D37 /* Services */,
 				A2D6389C222D530A001C5D37 /* Util */,
 				A2D63892222D528F001C5D37 /* Modules */,
@@ -253,6 +291,7 @@
 				A2AE430C222D557900DD38A3 /* Extensions.swift */,
 				A2AE430A222D550300DD38A3 /* Navigatable.swift */,
 				A2D6389D222D531B001C5D37 /* Logger.swift */,
+				A2022F1B222EFE2500FBF107 /* FireTile.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -382,6 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A28FE724222FCBAC00AF48C0 /* README.md in Resources */,
 				A2AE4318222D573B00DD38A3 /* MapViewController.storyboard in Resources */,
 				A2D6386D222D521B001C5D37 /* LaunchScreen.storyboard in Resources */,
 				A2AE4309222D542F00DD38A3 /* GoogleService-Info.plist in Resources */,
@@ -515,6 +555,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2AE430B222D550300DD38A3 /* Navigatable.swift in Sources */,
+				A2022F19222EF43600FBF107 /* AnnotationView.swift in Sources */,
+				A2022F17222EF0E300FBF107 /* Annotation.swift in Sources */,
 				A2AE4314222D55FE00DD38A3 /* MapNavigator.swift in Sources */,
 				A2D638A0222D5332001C5D37 /* DependencyContainer.swift in Sources */,
 				A2AE4313222D55FE00DD38A3 /* MapViewController.swift in Sources */,
@@ -525,6 +567,8 @@
 				A2AE4316222D55FE00DD38A3 /* MapBuilder.swift in Sources */,
 				A2D63899222D52E2001C5D37 /* ModuleTemplatePresenter.swift in Sources */,
 				A2D63863222D5219001C5D37 /* AppDelegate.swift in Sources */,
+				A2022F15222EEDE600FBF107 /* Place.swift in Sources */,
+				A2022F1C222EFE2500FBF107 /* FireTile.swift in Sources */,
 				A2D638A5222D5389001C5D37 /* FirebaseConfig.swift in Sources */,
 				A2D638A6222D5389001C5D37 /* FirestoreService.swift in Sources */,
 				A2AE430D222D557900DD38A3 /* Extensions.swift in Sources */,
@@ -711,7 +755,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.solidrock.ios.FireTiles;
+				PRODUCT_BUNDLE_IDENTIFIER = bundle.identifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -730,7 +774,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.solidrock.ios.FireTiles;
+				PRODUCT_BUNDLE_IDENTIFIER = bundle.identifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

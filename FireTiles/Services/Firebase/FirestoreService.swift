@@ -7,20 +7,34 @@
 //
 
 import Foundation
+import CoreLocation
+import MapKit
 
 import Firebase
 import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
-    func testDb()
+    func loadAllPlaces(completion: @escaping ([Place]) -> ())
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, precision: FireTile.TilePrecision, completion: @escaping ([Place]) -> ())
+    func generateRandomPlaces(count: Int,
+                              neCoord: CLLocationCoordinate2D,
+                              swCoord: CLLocationCoordinate2D,
+                              completion: @escaping () -> ())
 }
 
 class FirestoreService {
-    // swiftlint:disable:next identifier_name
     private let db: Firestore
     private let log = Logger()
+    private let userDefaults: UserDefaults
     
-    init(config: FirebaseConfig) {
+    private let tileLocationsField = "tileLocations"
+    private let locationField = "location"
+    private let collectionName = "Places"
+    
+    init(config: FirebaseConfig,
+         userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+        
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
         
@@ -29,27 +43,102 @@ class FirestoreService {
     }
 }
 
-extension FirestoreService: FirestoreServiceProtocol {
-    func testDb() {
-        var iPhoneAd = [String: Any]()
-        iPhoneAd["productId"] = "iPhoneXS"
-        iPhoneAd["description"] = "Brand new, mostly unused, including warranty! 😃"
-        iPhoneAd["addedServerTimestamp"] = FieldValue.serverTimestamp()
+extension FirestoreService: FirestoreServiceProtocol {    
+    func generateRandomPlaces(count: Int,
+                              neCoord: CLLocationCoordinate2D,
+                              swCoord: CLLocationCoordinate2D,
+                              completion: @escaping () -> ()) {
+        guard count > 1 else { return }
         
-        var ref: DocumentReference?
-        ref = db.collection("iPhoneAds").addDocument(data: iPhoneAd) { [weak self] error in
-            if let error = error {
-                self?.log.error(error)
+        let batch = db.batch()
+        for _ in 1...count {
+            let latRandom = Double.random(in: min(swCoord.latitude, neCoord.latitude)...max(swCoord.latitude, neCoord.latitude))
+            let longRandom = Double.random(in: min(swCoord.longitude, neCoord.longitude)...max(swCoord.longitude, neCoord.longitude))
+            
+            var allTiles = [String]()
+            
+            let fireTiles0_01 = FireTile(precision: .p0_01).createSearchRegion(
+                latitude: latRandom,
+                longitude: longRandom
+            )
+            
+            let fireTiles0_10 = FireTile(precision: .p0_10).createSearchRegion(
+                latitude: latRandom,
+                longitude: longRandom
+            )
+            
+            let fireTiles1_00 = FireTile(precision: .p1_00).createSearchRegion(
+                latitude: latRandom,
+                longitude: longRandom
+            )
+            
+            allTiles.append(contentsOf: fireTiles0_01)
+            allTiles.append(contentsOf: fireTiles0_10)
+            allTiles.append(contentsOf: fireTiles1_00)
+            
+            var data = [String: Any]()
+            data[locationField] = GeoPoint(latitude: latRandom, longitude: longRandom)
+            data[tileLocationsField] = allTiles
+            
+            let document = db.collection(self.collectionName).document()
+            batch.setData(data, forDocument: document)
+        }
+        
+        batch.commit() { err in
+            if let err = err {
+                self.log.error("Error writing batch \(err)")
             } else {
-                self?.log.info("Document added with id: \(String(describing: ref?.documentID))")
+                self.log.info("Added \(count) new documents")
+                completion()
             }
         }
     }
     
-    func generateTestData() {
-        for _ in 1...500 {
-            var document = [String: Any]()
-            document["location"] = GeoPoint(latitude: 0, longitude: 0)
+    func loadAllPlaces(completion: @escaping ([Place]) -> ()) {
+        db.collection(collectionName).getDocuments { [weak self] (snapshot, error) in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                self?.log.error("Error getting documents: \(error)")
+            } else {
+                var places = [Place]()
+                for document in snapshot!.documents {
+                    let placeDocument = document.data()
+                    if let geoPoint = placeDocument[strongSelf.locationField] as? GeoPoint {
+                        let location = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+                        let place = Place(documentId: document.documentID, coordinate: location)
+                        places.append(place)
+                    }
+                }
+                self?.log.info("Loaded \(snapshot!.documents.count) documents")
+                completion(places)
+            }
+        }
+    }
+    
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, precision: FireTile.TilePrecision, completion: @escaping ([Place]) -> ()) {
+        let locationTile = FireTile(precision: precision).location(coordinate: coordinate)
+        
+        db.collection(collectionName)
+            .whereField(tileLocationsField, arrayContains: locationTile)
+            .getDocuments { [weak self] (snapshot, error) in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                self?.log.error("Error getting documents: \(error)")
+            } else {
+                var places = [Place]()
+                for document in snapshot!.documents {
+                    let placeDocument = document.data()
+                    if let geoPoint = placeDocument[strongSelf.locationField] as? GeoPoint {
+                        let location = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+                        let place = Place(documentId: document.documentID, coordinate: location)
+                        places.append(place)
+                    }
+                }
+                self?.log.info("Loaded \(snapshot!.documents.count) documents nearby")
+                completion(places)
+            }
         }
     }
 }

@@ -19,7 +19,10 @@ protocol DependencyContainerProtocol {
 class DependencyContainer: DependencyContainerProtocol {
     /// FirebaseConfig is instantiated here only once as lazy and passed to all other Firebase Services.
     private(set) lazy var firebaseConfig = FirebaseConfig()
-    private(set) lazy var firestoreService: FirestoreServiceProtocol = FirestoreService(config: self.firebaseConfig)
+    private(set) lazy var firestoreService: FirestoreServiceProtocol = FirestoreService(
+        config: self.firebaseConfig,
+        userDefaults: self.userDefaults
+    )
     
     /// Using own user defaults instead of UserDefaults.standards enabled unit testing of UserDefaults.
     /// In the corresponding unit test another user default is created and so we have isolated tests.
