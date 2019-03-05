@@ -10,6 +10,8 @@ import Foundation
 import CoreLocation
 
 protocol MapPresenterProtocol {
+    var places: [Place] { get }
+    
     func viewDidLoad()
 }
 
@@ -21,8 +23,7 @@ class MapPresenter {
     
     private let initialLocation = CLLocation(latitude: 37.74520008, longitude: -122.4464035)
     private let initialDistance = CLLocationDistance(exactly: 15000)!
-    
-    private var locations = [CLLocation]()
+    private(set) var places = [Place]()
     
     init(view: MapViewControllerProtocol,
          navigator: MapNavigatorProtocol,
@@ -30,10 +31,6 @@ class MapPresenter {
         self.view = view
         self.navigator = navigator
         self.firestoreService = firestoreService
-    }
-    
-    private func drawAnnotations() {
-        
     }
     
     deinit {
@@ -45,8 +42,10 @@ extension MapPresenter: MapPresenterProtocol {
     func viewDidLoad() {
         self.view.centerMapOnLocation(location: self.initialLocation, distance: self.initialDistance)
         self.firestoreService.generateTestDataOnce()
-        self.firestoreService.downloadTestDataOnce { [weak self] locations in
-            self?.locations = locations
+        self.firestoreService.downloadTestDataOnce { [weak self] places in
+            guard let strongSelf = self else { return }
+            strongSelf.places = places
+            strongSelf.view.drawAnnotations(places: strongSelf.places)
         }
     }
 }

@@ -14,7 +14,7 @@ import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
     func generateTestDataOnce()
-    func downloadTestDataOnce(completion: @escaping ([CLLocation]) -> ())
+    func downloadTestDataOnce(completion: @escaping ([Place]) -> ())
 }
 
 class FirestoreService {
@@ -67,22 +67,23 @@ extension FirestoreService: FirestoreServiceProtocol {
         }
     }
     
-    func downloadTestDataOnce(completion: @escaping ([CLLocation]) -> ()) {
+    func downloadTestDataOnce(completion: @escaping ([Place]) -> ()) {
         db.collection("Restaurants").getDocuments { [weak self] (snapshot, error) in
             if let error = error {
                 self?.log.error("Error getting documents: \(error)")
             } else {
-                var locations = [CLLocation]()
+                var places = [Place]()
                 for document in snapshot!.documents {
                     self?.log.info("\(document.documentID) => \(document.data())")
                     
-                    let location = document.data()
-                    if let geoPoint = location["location"] as? GeoPoint {
-                        let clLocation = CLLocation(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
-                        locations.append(clLocation)
+                    let placeDocument = document.data()
+                    if let geoPoint = placeDocument["location"] as? GeoPoint {
+                        let location = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+                        let place = Place(documentId: document.documentID, coordinate: location)
+                        places.append(place)
                     }
                 }
-                completion(locations)
+                completion(places)
             }
         }
     }

@@ -24,10 +24,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="dy7-u5-PAU" firstAttribute="bottom" secondItem="4UT-z8-1yT" secondAttribute="bottom" id="AOX-q2-334"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="top" secondItem="64s-oD-zRP" secondAttribute="top" id="MeJ-Pv-Ets"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="trailing" secondItem="4UT-z8-1yT" secondAttribute="trailing" id="bYy-xO-XEf"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="leading" secondItem="4UT-z8-1yT" secondAttribute="leading" id="hYd-Fy-8gN"/>
+                            <constraint firstAttribute="bottom" secondItem="dy7-u5-PAU" secondAttribute="bottom" id="oSS-ck-980"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4UT-z8-1yT"/>
                     </view>
