@@ -52,16 +52,36 @@ extension FirestoreService: FirestoreServiceProtocol {
             let latRandom = Double.random(in: 37.65460531...37.78211206)
             let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
             
-            let fireTiles = FireTile(precision: .p0_01).createSearchRegion(
+            var allTiles = [String]()
+            
+            let fireTiles0_01 = FireTile(precision: .p0_01).createSearchRegion(
                 coordinate: CLLocationCoordinate2D(
                     latitude: latRandom,
                     longitude: longRandom
                 )
             )
             
+            let fireTiles0_10 = FireTile(precision: .p0_10).createSearchRegion(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: latRandom,
+                    longitude: longRandom
+                )
+            )
+            
+            let fireTiles1_00 = FireTile(precision: .p1_00).createSearchRegion(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: latRandom,
+                    longitude: longRandom
+                )
+            )
+            
+            allTiles.append(contentsOf: fireTiles0_01)
+            allTiles.append(contentsOf: fireTiles0_10)
+            allTiles.append(contentsOf: fireTiles1_00)
+            
             var document = [String: Any]()
             document[locationField] = GeoPoint(latitude: latRandom, longitude: longRandom)
-            document[tileLocationsField] = fireTiles
+            document[tileLocationsField] = allTiles
             
             dispatchGroup.enter()
             ref.addDocument(data: document) { error in
