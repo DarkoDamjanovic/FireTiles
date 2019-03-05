@@ -52,7 +52,7 @@ extension FirestoreService: FirestoreServiceProtocol {
             let latRandom = Double.random(in: 37.65460531...37.78211206)
             let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
             
-            let fireTiles = FireTile(precision: .p0_01).createRegion(
+            let fireTiles = FireTile(precision: .p0_01).createSearchRegion(
                 coordinate: CLLocationCoordinate2D(
                     latitude: latRandom,
                     longitude: longRandom

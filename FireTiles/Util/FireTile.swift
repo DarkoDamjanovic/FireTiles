@@ -11,67 +11,93 @@ import CoreLocation
 
 class FireTile {
     enum TilePrecision: String {
+        /// precision 0.01 degrees for latitude and longitude
+        /// this roughly translates to a search region of 2.5km x 3.3km
         case p0_01
-        case p0_02
-        case p0_05
-        case p0_1
+        
+        /// precision 0.10 degrees for latitude and longitude
+        /// this roughly translates to a search region of 8.5km x 11km
+        case p0_10
+        
+        /// precision 1.00 degrees for latitude and longitude
+        /// this roughly translates to a search region of 85km x 111km
+        case p1_00
     }
-    let precision: TilePrecision
+    let tilePrecision: TilePrecision
     
     init(precision: TilePrecision) {
-        self.precision = precision
+        self.tilePrecision = precision
     }
     
-    func createRegion(coordinate: CLLocationCoordinate2D) -> [String] {
-        var tiles = [String]()
+    func createSearchRegion(coordinate: CLLocationCoordinate2D) -> [String] {
+        var latitude = Decimal()
+        var longitude = Decimal()
+        var precision = Decimal()
         
-        switch self.precision {
+        switch self.tilePrecision {
         case .p0_01:
-            let latitude = Decimal(Int(coordinate.latitude * 100)) / Decimal(100)
-            let longitude = Decimal(Int(coordinate.longitude * 100)) / Decimal(100)
-            let precision = Decimal(string: "0.01")!
+            latitude = Decimal(Int(coordinate.latitude * 100)) / Decimal(100)
+            longitude = Decimal(Int(coordinate.longitude * 100)) / Decimal(100)
+            precision = Decimal(string: "0.01")!
             
-            let northWestTile = "\(TilePrecision.p0_01.rawValue):\(latitude - precision)/\(longitude - precision)"
-            let northTile = "\(TilePrecision.p0_01.rawValue):\(latitude - precision)/\(longitude)"
-            let northEastTile = "\(TilePrecision.p0_01.rawValue):\(latitude - precision)/\(longitude + precision)"
+        case .p0_10:
+            latitude = Decimal(Int(coordinate.latitude * 10)) / Decimal(10)
+            longitude = Decimal(Int(coordinate.longitude * 10)) / Decimal(10)
+            precision = Decimal(string: "0.10")!
             
-            let westTile = "\(TilePrecision.p0_01.rawValue):\(latitude)/\(longitude - precision)"
-            let centerTile = "\(TilePrecision.p0_01.rawValue):\(latitude)/\(longitude)"
-            let eastTile = "\(TilePrecision.p0_01.rawValue):\(latitude)/\(longitude + precision)"
-            
-            let southWestTile = "\(TilePrecision.p0_01.rawValue):\(latitude + precision)/\(longitude - precision)"
-            let southTile = "\(TilePrecision.p0_01.rawValue):\(latitude + precision)/\(longitude)"
-            let southEastTile = "\(TilePrecision.p0_01.rawValue):\(latitude + precision)/\(longitude + precision)"
-            
-            tiles.append(northWestTile)
-            tiles.append(northTile)
-            tiles.append(northEastTile)
-            tiles.append(westTile)
-            tiles.append(centerTile)
-            tiles.append(eastTile)
-            tiles.append(southWestTile)
-            tiles.append(southTile)
-            tiles.append(southEastTile)
-        default:
-            break
+        case .p1_00:
+            latitude = Decimal(Int(coordinate.latitude))
+            longitude = Decimal(Int(coordinate.longitude))
+            precision = Decimal(string: "1.00")!
         }
-
+        return self.generateTiles(latitude: latitude, longitude: longitude, precision: precision)
+    }
+    
+    private func generateTiles(latitude: Decimal, longitude: Decimal, precision: Decimal) -> [String] {
+        var tiles = [String]()
+        let northWestTile = "\(tilePrecision.rawValue):\(latitude - precision)/\(longitude - precision)"
+        let northTile = "\(tilePrecision.rawValue):\(latitude - precision)/\(longitude)"
+        let northEastTile = "\(tilePrecision.rawValue):\(latitude - precision)/\(longitude + precision)"
+        
+        let westTile = "\(tilePrecision.rawValue):\(latitude)/\(longitude - precision)"
+        let centerTile = "\(tilePrecision.rawValue):\(latitude)/\(longitude)"
+        let eastTile = "\(tilePrecision.rawValue):\(latitude)/\(longitude + precision)"
+        
+        let southWestTile = "\(tilePrecision.rawValue):\(latitude + precision)/\(longitude - precision)"
+        let southTile = "\(tilePrecision.rawValue):\(latitude + precision)/\(longitude)"
+        let southEastTile = "\(tilePrecision.rawValue):\(latitude + precision)/\(longitude + precision)"
+        
+        tiles.append(northWestTile)
+        tiles.append(northTile)
+        tiles.append(northEastTile)
+        tiles.append(westTile)
+        tiles.append(centerTile)
+        tiles.append(eastTile)
+        tiles.append(southWestTile)
+        tiles.append(southTile)
+        tiles.append(southEastTile)
+        
         return tiles
     }
     
     func location(coordinate: CLLocationCoordinate2D) -> String {
-        var center = ""
-        switch self.precision {
+        var latitude = Decimal()
+        var longitude = Decimal()
+        
+        switch self.tilePrecision {
         case .p0_01:
-            let latitude = Decimal(Int(coordinate.latitude * 100)) / Decimal(100)
-            let longitude = Decimal(Int(coordinate.longitude * 100)) / Decimal(100)
-            center = "\(TilePrecision.p0_01.rawValue):\(latitude)/\(longitude)"
+            latitude = Decimal(Int(coordinate.latitude * 100)) / Decimal(100)
+            longitude = Decimal(Int(coordinate.longitude * 100)) / Decimal(100)
 
-        default:
-            break
+        case .p0_10:
+            latitude = Decimal(Int(coordinate.latitude * 10)) / Decimal(10)
+            longitude = Decimal(Int(coordinate.longitude * 10)) / Decimal(10)
+            
+        case .p1_00:
+            latitude = Decimal(Int(coordinate.latitude))
+            longitude = Decimal(Int(coordinate.longitude))
         }
         
-        return center
+        return "\(tilePrecision.rawValue):\(latitude)/\(longitude)"
     }
 }
-
