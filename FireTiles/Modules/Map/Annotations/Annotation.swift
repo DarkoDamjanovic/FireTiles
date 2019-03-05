@@ -14,10 +14,14 @@ class Annotation: NSObject, MKAnnotation {
     var subtitle: String? = nil
     var documentId: String
     let coordinate: CLLocationCoordinate2D
+    private(set) var color = MKPinAnnotationView.redPinColor()
     
-    init(documentId: String, coordinate: CLLocationCoordinate2D) {
+    init(documentId: String, coordinate: CLLocationCoordinate2D, nearBy: Bool = false) {
         self.documentId = documentId
         self.coordinate = coordinate
+        if nearBy {
+            self.color = MKPinAnnotationView.greenPinColor()
+        }
         super.init()
     }
 }

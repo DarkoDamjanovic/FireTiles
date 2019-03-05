@@ -12,6 +12,7 @@
 		A2022F15222EEDE600FBF107 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F14222EEDE600FBF107 /* Place.swift */; };
 		A2022F17222EF0E300FBF107 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F16222EF0E300FBF107 /* Annotation.swift */; };
 		A2022F19222EF43600FBF107 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F18222EF43600FBF107 /* AnnotationView.swift */; };
+		A2022F1C222EFE2500FBF107 /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F1B222EFE2500FBF107 /* FireTile.swift */; };
 		A2AE4309222D542F00DD38A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */; };
 		A2AE430B222D550300DD38A3 /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430A222D550300DD38A3 /* Navigatable.swift */; };
 		A2AE430D222D557900DD38A3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430C222D557900DD38A3 /* Extensions.swift */; };
@@ -64,6 +65,7 @@
 		A2022F14222EEDE600FBF107 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		A2022F16222EF0E300FBF107 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		A2022F18222EF43600FBF107 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
+		A2022F1B222EFE2500FBF107 /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
 		A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A2AE430A222D550300DD38A3 /* Navigatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
 		A2AE430C222D557900DD38A3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				A2AE430C222D557900DD38A3 /* Extensions.swift */,
 				A2AE430A222D550300DD38A3 /* Navigatable.swift */,
 				A2D6389D222D531B001C5D37 /* Logger.swift */,
+				A2022F1B222EFE2500FBF107 /* FireTile.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				A2D63899222D52E2001C5D37 /* ModuleTemplatePresenter.swift in Sources */,
 				A2D63863222D5219001C5D37 /* AppDelegate.swift in Sources */,
 				A2022F15222EEDE600FBF107 /* Place.swift in Sources */,
+				A2022F1C222EFE2500FBF107 /* FireTile.swift in Sources */,
 				A2D638A5222D5389001C5D37 /* FirebaseConfig.swift in Sources */,
 				A2D638A6222D5389001C5D37 /* FirestoreService.swift in Sources */,
 				A2AE430D222D557900DD38A3 /* Extensions.swift in Sources */,

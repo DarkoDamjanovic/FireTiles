@@ -13,15 +13,19 @@ import Firebase
 import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
-    func generateTestDataOnce()
-    func downloadTestDataOnce(completion: @escaping ([Place]) -> ())
+    func generateRandomPlaces(count: Int, completion: @escaping () -> ())
+    func loadAllPlaces(completion: @escaping ([Place]) -> ())
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, completion: @escaping ([Place]) -> ())
 }
 
 class FirestoreService {
-    // swiftlint:disable:next identifier_name
     private let db: Firestore
     private let log = Logger()
     private let userDefaults: UserDefaults
+    
+    private let tileLocationsField = "tileLocations"
+    private let locationField = "location"
+    private let collectionName = "Restaurants"
     
     init(config: FirebaseConfig,
          userDefaults: UserDefaults) {
@@ -36,39 +40,51 @@ class FirestoreService {
 }
 
 extension FirestoreService: FirestoreServiceProtocol {
-    func testDb() {
-        var iPhoneAd = [String: Any]()
-        iPhoneAd["productId"] = "iPhoneXS"
-        iPhoneAd["description"] = "Brand new, mostly unused, including warranty! 😃"
-        iPhoneAd["addedServerTimestamp"] = FieldValue.serverTimestamp()
+    func generateRandomPlaces(count: Int, completion: @escaping () -> ()) {
+        guard count > 1 else { return }
         
-        var ref: DocumentReference?
-        ref = db.collection("iPhoneAds").addDocument(data: iPhoneAd) { [weak self] error in
-            if let error = error {
-                self?.log.error(error)
+        let ref = db.collection(collectionName)
+        let dispatchGroup = DispatchGroup()
+        var dbError: Error?
+        for _ in 1...count {
+            
+            // San Francisco area
+            let latRandom = Double.random(in: 37.65460531...37.78211206)
+            let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
+            
+            let fireTiles = FireTile(precision: .p0_01).createRegion(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: latRandom,
+                    longitude: longRandom
+                )
+            )
+            
+            var document = [String: Any]()
+            document[locationField] = GeoPoint(latitude: latRandom, longitude: longRandom)
+            document[tileLocationsField] = fireTiles
+            
+            dispatchGroup.enter()
+            ref.addDocument(data: document) { error in
+                if let error = error {
+                    dbError = error
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            if let dbError = dbError {
+                self.log.error(dbError)
             } else {
-                self?.log.info("Document added with id: \(String(describing: ref?.documentID))")
+                completion()
             }
         }
     }
     
-    func generateTestDataOnce() {
-        guard userDefaults.bool(forKey: "testdata_already_written") == false else { return }
-        userDefaults.set(true, forKey: "testdata_already_written")
-        
-        let ref = db.collection("Restaurants")
-        for _ in 1...100 {
-            let latRandom = Double.random(in: 37.65460531...37.78211206)
-            let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
+    func loadAllPlaces(completion: @escaping ([Place]) -> ()) {
+        db.collection(collectionName).getDocuments { [weak self] (snapshot, error) in
+            guard let strongSelf = self else { return }
             
-            var document = [String: Any]()
-            document["location"] = GeoPoint(latitude: latRandom, longitude: longRandom)
-            ref.addDocument(data: document)
-        }
-    }
-    
-    func downloadTestDataOnce(completion: @escaping ([Place]) -> ()) {
-        db.collection("Restaurants").getDocuments { [weak self] (snapshot, error) in
             if let error = error {
                 self?.log.error("Error getting documents: \(error)")
             } else {
@@ -77,7 +93,34 @@ extension FirestoreService: FirestoreServiceProtocol {
                     self?.log.info("\(document.documentID) => \(document.data())")
                     
                     let placeDocument = document.data()
-                    if let geoPoint = placeDocument["location"] as? GeoPoint {
+                    if let geoPoint = placeDocument[strongSelf.locationField] as? GeoPoint {
+                        let location = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+                        let place = Place(documentId: document.documentID, coordinate: location)
+                        places.append(place)
+                    }
+                }
+                completion(places)
+            }
+        }
+    }
+    
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, completion: @escaping ([Place]) -> ()) {
+        let centerLocation = FireTile(precision: .p0_01).location(coordinate: coordinate)
+        
+        db.collection(collectionName)
+            .whereField(tileLocationsField, arrayContains: centerLocation)
+            .getDocuments { [weak self] (snapshot, error) in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                self?.log.error("Error getting documents: \(error)")
+            } else {
+                var places = [Place]()
+                for document in snapshot!.documents {
+                    self?.log.info("\(document.documentID) => \(document.data())")
+                    
+                    let placeDocument = document.data()
+                    if let geoPoint = placeDocument[strongSelf.locationField] as? GeoPoint {
                         let location = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
                         let place = Place(documentId: document.documentID, coordinate: location)
                         places.append(place)
