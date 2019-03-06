@@ -37,7 +37,6 @@ Just add the file "FireTile.swift" into your project.
 Usage:
 
 ```swift
-    
 /// On uploading a document which needs to be searched 
 let searchRegion = FireTile(precision: .p0_01).createSearchRegion(
     latitude: latRandom,
