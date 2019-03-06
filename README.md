@@ -16,3 +16,15 @@ Handling:
 - tap in the map to start a nearby search. Green pins are within the search bounding box, red pins are outside the search bounding box
 
 ATTENTION: creating and reading documents counts towards your Firestore Quota!
+
+Bounding box precision 0.01 decimal degrees, roughly 2.5km x 3.3km:
+
+<img src="https://raw.githubusercontent.com/DarkoDamjanovic/FireTiles/master/Screenshots/0_01.png" width="250">
+
+Bounding box precision 0.10 decimal degrees, roughly 8.5km x 11km:
+
+<img src="https://raw.githubusercontent.com/DarkoDamjanovic/FireTiles/master/Screenshots/0_10.png" width="250">
+
+Bounding box precision 1.00 decimal degrees, roughly 85km x 111km:
+
+<img src="https://raw.githubusercontent.com/DarkoDamjanovic/FireTiles/master/Screenshots/1_00.png" width="250">
