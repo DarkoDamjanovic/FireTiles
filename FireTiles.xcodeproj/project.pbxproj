@@ -13,6 +13,7 @@
 		A2022F17222EF0E300FBF107 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F16222EF0E300FBF107 /* Annotation.swift */; };
 		A2022F19222EF43600FBF107 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F18222EF43600FBF107 /* AnnotationView.swift */; };
 		A2022F1C222EFE2500FBF107 /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2022F1B222EFE2500FBF107 /* FireTile.swift */; };
+		A28FE724222FCBAC00AF48C0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A28FE723222FCBAC00AF48C0 /* README.md */; };
 		A2AE4309222D542F00DD38A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */; };
 		A2AE430B222D550300DD38A3 /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430A222D550300DD38A3 /* Navigatable.swift */; };
 		A2AE430D222D557900DD38A3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AE430C222D557900DD38A3 /* Extensions.swift */; };
@@ -66,6 +67,7 @@
 		A2022F16222EF0E300FBF107 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		A2022F18222EF43600FBF107 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		A2022F1B222EFE2500FBF107 /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
+		A28FE723222FCBAC00AF48C0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		A2AE4308222D542F00DD38A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A2AE430A222D550300DD38A3 /* Navigatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
 		A2AE430C222D557900DD38A3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -167,6 +169,14 @@
 			path = Annotations;
 			sourceTree = "<group>";
 		};
+		A28FE722222FCB9700AF48C0 /* Readme */ = {
+			isa = PBXGroup;
+			children = (
+				A28FE723222FCBAC00AF48C0 /* README.md */,
+			);
+			name = Readme;
+			sourceTree = "<group>";
+		};
 		A2AE430E222D55E500DD38A3 /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				A2D63890222D525C001C5D37 /* App */,
+				A28FE722222FCB9700AF48C0 /* Readme */,
 				A2D63891222D5274001C5D37 /* Resources */,
 				A2022F13222EED9500FBF107 /* Models */,
 				A2D638A1222D536C001C5D37 /* Services */,
@@ -410,6 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A28FE724222FCBAC00AF48C0 /* README.md in Resources */,
 				A2AE4318222D573B00DD38A3 /* MapViewController.storyboard in Resources */,
 				A2D6386D222D521B001C5D37 /* LaunchScreen.storyboard in Resources */,
 				A2AE4309222D542F00DD38A3 /* GoogleService-Info.plist in Resources */,
@@ -743,7 +755,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.solidrock.ios.unfurbished.development;
+				PRODUCT_BUNDLE_IDENTIFIER = bundle.identifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -762,7 +774,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = solutions.solidrock.ios.unfurbished.development;
+				PRODUCT_BUNDLE_IDENTIFIER = bundle.identifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

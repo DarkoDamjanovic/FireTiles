@@ -28,7 +28,7 @@ class MapPresenter {
     private static let initialLongitude = -115.148312
     
     private let initialLocation = CLLocationCoordinate2D(latitude: initialLatitude, longitude: initialLongitude)
-    private let initialDistance = CLLocationDistance(exactly: 15000)!
+    private let initialDistance = CLLocationDistance(exactly: 70000)!
     private var places = Set<Place>()
     private var nearByPlaces = Set<Place>()
     private var precision: FireTile.TilePrecision = .p0_01

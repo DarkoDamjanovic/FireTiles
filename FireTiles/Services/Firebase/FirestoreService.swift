@@ -53,8 +53,9 @@ extension FirestoreService: FirestoreServiceProtocol {
         let ref = db.collection(collectionName)
         let dispatchGroup = DispatchGroup()
         var dbError: Error?
-        for _ in 1...count {
-            
+        
+        for i in 1...count {
+            self.log.info("Iteration: \(i)")
             let latRandom = Double.random(in: min(swCoord.latitude, neCoord.latitude)...max(swCoord.latitude, neCoord.latitude))
             let longRandom = Double.random(in: min(swCoord.longitude, neCoord.longitude)...max(swCoord.longitude, neCoord.longitude))
             

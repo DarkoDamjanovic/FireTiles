@@ -34,18 +34,8 @@ class MapViewController: UIViewController {
     private func setupUI() {
         self.activityIndicator.isHidden = true
         self.mapView.delegate = self
-        
-        if let mapGestureRecognizer = self.mapView.gestureRecognizers {
-            for gestureRecognizer in mapGestureRecognizer {
-                if let doubleTapGestureRecognizer = gestureRecognizer as? UITapGestureRecognizer {
-                    if doubleTapGestureRecognizer.numberOfTapsRequired == 2 {
-                        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.mapTapped(recognizer:)))
-                        singleTapGesture.require(toFail: doubleTapGestureRecognizer)
-                        self.mapView.addGestureRecognizer(singleTapGesture)
-                    }
-                }
-            }
-        }
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.mapTapped(recognizer:)))
+        self.mapView.addGestureRecognizer(singleTapGesture)
     }
     
     @objc private func mapTapped(recognizer: UITapGestureRecognizer) {
@@ -62,15 +52,15 @@ class MapViewController: UIViewController {
         let neCoord = self.mapView.convert(nePoint, toCoordinateFrom: self.mapView)
         let swCoord = self.mapView.convert(swPoint, toCoordinateFrom: self.mapView)
         
-        let sheet = UIAlertController(title: "Create places", message: "Create random places in current visible map view region", preferredStyle: .actionSheet)
-        let random100Action = UIAlertAction(title: "Create random 100 places", style: .default) { alertAction in
-            self.presenter.generateRandomPlaces(count: 100, neCoord: neCoord, swCoord: swCoord)
+        let sheet = UIAlertController(title: "Add places", message: "Add random places in current visible map view region.", preferredStyle: .actionSheet)
+        let random100Action = UIAlertAction(title: "Add random 10 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 10, neCoord: neCoord, swCoord: swCoord)
         }
-        let random300Action = UIAlertAction(title: "Create random 300 places", style: .default) { alertAction in
-            self.presenter.generateRandomPlaces(count: 300, neCoord: neCoord, swCoord: swCoord)
+        let random300Action = UIAlertAction(title: "Add random 30 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 30, neCoord: neCoord, swCoord: swCoord)
         }
-        let random500Action = UIAlertAction(title: "Create random 500 places", style: .default) { alertAction in
-            self.presenter.generateRandomPlaces(count: 500, neCoord: neCoord, swCoord: swCoord)
+        let random500Action = UIAlertAction(title: "Add random 50 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 50, neCoord: neCoord, swCoord: swCoord)
         }
         sheet.addAction(random100Action)
         sheet.addAction(random300Action)
