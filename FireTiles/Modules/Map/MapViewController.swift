@@ -34,14 +34,65 @@ class MapViewController: UIViewController {
     private func setupUI() {
         self.activityIndicator.isHidden = true
         self.mapView.delegate = self
+        
+        if let mapGestureRecognizer = self.mapView.gestureRecognizers {
+            for gestureRecognizer in mapGestureRecognizer {
+                if let doubleTapGestureRecognizer = gestureRecognizer as? UITapGestureRecognizer {
+                    if doubleTapGestureRecognizer.numberOfTapsRequired == 2 {
+                        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.mapTapped(recognizer:)))
+                        singleTapGesture.require(toFail: doubleTapGestureRecognizer)
+                        self.mapView.addGestureRecognizer(singleTapGesture)
+                    }
+                }
+            }
+        }
     }
     
-    @IBAction func buttonNearByTapped(_ sender: Any) {
-        self.presenter.buttonNearByTapped()
+    @objc private func mapTapped(recognizer: UITapGestureRecognizer) {
+        let point = recognizer.location(in: self.mapView)
+        let coordindate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
+        if recognizer.numberOfTouches == 1 {
+            self.presenter.nearByTappedAt(coordindate: coordindate)
+        }
     }
     
-    @IBAction func buttonNewPlacesTapped(_ sender: Any) {
-        self.presenter.buttonNewPlacesTapped()
+    @IBAction func buttonLeftTapped(_ sender: Any) {
+        let nePoint = CGPoint(x: self.mapView.bounds.maxX, y: self.mapView.bounds.origin.y)
+        let swPoint = CGPoint(x: self.mapView.bounds.minX, y: self.mapView.bounds.maxY)
+        let neCoord = self.mapView.convert(nePoint, toCoordinateFrom: self.mapView)
+        let swCoord = self.mapView.convert(swPoint, toCoordinateFrom: self.mapView)
+        
+        let sheet = UIAlertController(title: "Create places", message: "Create random places in current visible map view region", preferredStyle: .actionSheet)
+        let random100Action = UIAlertAction(title: "Create random 100 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 100, neCoord: neCoord, swCoord: swCoord)
+        }
+        let random300Action = UIAlertAction(title: "Create random 300 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 300, neCoord: neCoord, swCoord: swCoord)
+        }
+        let random500Action = UIAlertAction(title: "Create random 500 places", style: .default) { alertAction in
+            self.presenter.generateRandomPlaces(count: 500, neCoord: neCoord, swCoord: swCoord)
+        }
+        sheet.addAction(random100Action)
+        sheet.addAction(random300Action)
+        sheet.addAction(random500Action)
+        self.present(sheet, animated: true, completion: nil)
+    }
+    
+    @IBAction func buttonRightTapped(_ sender: Any) {
+        let sheet = UIAlertController(title: "Bounding box size", message: "Set the bounding box size for nearby places search. Tap on the map to search.", preferredStyle: .actionSheet)
+        let action1 = UIAlertAction(title: "approx. region 2.5km x 3.3km", style: .default) { alertAction in
+            self.presenter.setPrecision(precision: .p0_01)
+        }
+        let action2 = UIAlertAction(title: "approx. region 8.5km x 11km", style: .default) { alertAction in
+            self.presenter.setPrecision(precision: .p0_10)
+        }
+        let action3 = UIAlertAction(title: "approx. region 85km x 111km", style: .default) { alertAction in
+            self.presenter.setPrecision(precision: .p1_00)
+        }
+        sheet.addAction(action1)
+        sheet.addAction(action2)
+        sheet.addAction(action3)
+        self.present(sheet, animated: true, completion: nil)
     }
     
     deinit {

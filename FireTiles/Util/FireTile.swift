@@ -29,6 +29,10 @@ class FireTile {
         self.tilePrecision = precision
     }
     
+    func createSearchRegion(latitude: Double, longitude: Double) -> [String] {
+        return self.createSearchRegion(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+    }
+    
     func createSearchRegion(coordinate: CLLocationCoordinate2D) -> [String] {
         var latitude = Decimal()
         var longitude = Decimal()

@@ -27,7 +27,7 @@
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Utg-CK-Qbf">
                                         <rect key="frame" x="0.0" y="0.0" width="163.5" height="44"/>
                                         <color key="backgroundColor" red="0.1494541952" green="0.7069242295" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="Nearby">
+                                        <state key="normal" title="Create places">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
@@ -37,13 +37,13 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="buttonNearByTapped:" destination="Llj-YF-voI" eventType="touchUpInside" id="D5I-2r-JS9"/>
+                                            <action selector="buttonLeftTapped:" destination="Llj-YF-voI" eventType="touchUpInside" id="yoZ-bB-SlE"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHw-Vw-weD">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gd-45-7if">
                                         <rect key="frame" x="179.5" y="0.0" width="163.5" height="44"/>
                                         <color key="backgroundColor" red="0.1494541952" green="0.7069242295" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="New places">
+                                        <state key="normal" title="Bounding box">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
@@ -53,7 +53,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="buttonNewPlacesTapped:" destination="Llj-YF-voI" eventType="touchUpInside" id="coa-fb-ei8"/>
+                                            <action selector="buttonRightTapped:" destination="Llj-YF-voI" eventType="touchUpInside" id="l22-4K-CcO"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -62,21 +62,21 @@
                                 </constraints>
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="6eV-a5-C5k">
-                                <rect key="frame" x="169" y="80" width="37" height="37"/>
+                                <rect key="frame" x="306" y="52" width="37" height="37"/>
                                 <color key="color" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6eV-a5-C5k" firstAttribute="top" secondItem="4UT-z8-1yT" secondAttribute="top" constant="60" id="Cmd-DD-n0J"/>
                             <constraint firstItem="4UT-z8-1yT" firstAttribute="bottom" secondItem="M5y-V5-FGs" secondAttribute="bottom" constant="16" id="HmP-26-N1X"/>
                             <constraint firstItem="M5y-V5-FGs" firstAttribute="leading" secondItem="4UT-z8-1yT" secondAttribute="leading" constant="16" id="IJJ-hC-BCF"/>
+                            <constraint firstItem="4UT-z8-1yT" firstAttribute="trailing" secondItem="6eV-a5-C5k" secondAttribute="trailing" constant="32" id="JJk-xc-mYw"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="top" secondItem="64s-oD-zRP" secondAttribute="top" id="MeJ-Pv-Ets"/>
                             <constraint firstItem="4UT-z8-1yT" firstAttribute="trailing" secondItem="M5y-V5-FGs" secondAttribute="trailing" constant="16" id="Rbi-bb-fwI"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="trailing" secondItem="4UT-z8-1yT" secondAttribute="trailing" id="bYy-xO-XEf"/>
+                            <constraint firstItem="6eV-a5-C5k" firstAttribute="top" secondItem="4UT-z8-1yT" secondAttribute="top" constant="32" id="cyU-Fb-YOL"/>
                             <constraint firstItem="dy7-u5-PAU" firstAttribute="leading" secondItem="4UT-z8-1yT" secondAttribute="leading" id="hYd-Fy-8gN"/>
                             <constraint firstAttribute="bottom" secondItem="dy7-u5-PAU" secondAttribute="bottom" id="oSS-ck-980"/>
-                            <constraint firstItem="6eV-a5-C5k" firstAttribute="centerX" secondItem="64s-oD-zRP" secondAttribute="centerX" id="zYc-sk-X2p"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4UT-z8-1yT"/>
                     </view>

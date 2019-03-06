@@ -8,14 +8,18 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
 import Firebase
 import FirebaseFirestore
 
 protocol FirestoreServiceProtocol {
-    func generateRandomPlaces(count: Int, completion: @escaping () -> ())
     func loadAllPlaces(completion: @escaping ([Place]) -> ())
-    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, completion: @escaping ([Place]) -> ())
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, precision: FireTile.TilePrecision, completion: @escaping ([Place]) -> ())
+    func generateRandomPlaces(count: Int,
+                              neCoord: CLLocationCoordinate2D,
+                              swCoord: CLLocationCoordinate2D,
+                              completion: @escaping () -> ())
 }
 
 class FirestoreService {
@@ -25,7 +29,7 @@ class FirestoreService {
     
     private let tileLocationsField = "tileLocations"
     private let locationField = "location"
-    private let collectionName = "Restaurants"
+    private let collectionName = "Places"
     
     init(config: FirebaseConfig,
          userDefaults: UserDefaults) {
@@ -40,7 +44,10 @@ class FirestoreService {
 }
 
 extension FirestoreService: FirestoreServiceProtocol {
-    func generateRandomPlaces(count: Int, completion: @escaping () -> ()) {
+    func generateRandomPlaces(count: Int,
+                              neCoord: CLLocationCoordinate2D,
+                              swCoord: CLLocationCoordinate2D,
+                              completion: @escaping () -> ()) {
         guard count > 1 else { return }
         
         let ref = db.collection(collectionName)
@@ -48,31 +55,24 @@ extension FirestoreService: FirestoreServiceProtocol {
         var dbError: Error?
         for _ in 1...count {
             
-            // San Francisco area
-            let latRandom = Double.random(in: 37.65460531...37.78211206)
-            let longRandom = Double.random(in: (-122.49137878)...(-122.39833832))
+            let latRandom = Double.random(in: min(swCoord.latitude, neCoord.latitude)...max(swCoord.latitude, neCoord.latitude))
+            let longRandom = Double.random(in: min(swCoord.longitude, neCoord.longitude)...max(swCoord.longitude, neCoord.longitude))
             
             var allTiles = [String]()
             
             let fireTiles0_01 = FireTile(precision: .p0_01).createSearchRegion(
-                coordinate: CLLocationCoordinate2D(
-                    latitude: latRandom,
-                    longitude: longRandom
-                )
+                latitude: latRandom,
+                longitude: longRandom
             )
             
             let fireTiles0_10 = FireTile(precision: .p0_10).createSearchRegion(
-                coordinate: CLLocationCoordinate2D(
-                    latitude: latRandom,
-                    longitude: longRandom
-                )
+                latitude: latRandom,
+                longitude: longRandom
             )
             
             let fireTiles1_00 = FireTile(precision: .p1_00).createSearchRegion(
-                coordinate: CLLocationCoordinate2D(
-                    latitude: latRandom,
-                    longitude: longRandom
-                )
+                latitude: latRandom,
+                longitude: longRandom
             )
             
             allTiles.append(contentsOf: fireTiles0_01)
@@ -124,8 +124,8 @@ extension FirestoreService: FirestoreServiceProtocol {
         }
     }
     
-    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, completion: @escaping ([Place]) -> ()) {
-        let centerLocation = FireTile(precision: .p0_01).location(coordinate: coordinate)
+    func getPlacesNearBy(coordinate: CLLocationCoordinate2D, precision: FireTile.TilePrecision, completion: @escaping ([Place]) -> ()) {
+        let centerLocation = FireTile(precision: precision).location(coordinate: coordinate)
         
         db.collection(collectionName)
             .whereField(tileLocationsField, arrayContains: centerLocation)
