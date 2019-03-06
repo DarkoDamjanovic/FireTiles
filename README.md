@@ -36,31 +36,33 @@ Just add the file "FireTile.swift" into your project.
 
 Usage:
 
-    /// On uploading a document which needs to be searched 
-    let searchRegion = FireTile(precision: .p0_01).createSearchRegion(
-      latitude: latRandom,
-      longitude: longRandom
-    )
-  
-    var document = [String: Any]()
-    document["searchRegion"] = searchRegion
-    // document["myField"] = "Some value" // add your field as needed
-    ref.addDocument(data: document)
+```swift
     
-    ...
-    ...
-      
-    // Searching for documents nearby
-    let locationTile = FireTile(precision: .p0_01).location(coordinate: coordinate)
-    db.collection("MyCollection")
-       .whereField("searchRegion", arrayContains: locationTile)
-       .getDocuments { snapshot, error in
-          if let error = error {
-            print(error)
-          } else {
-            for document in snapshot!.documents {
-              // ...
-            }
-          }
-        }
+/// On uploading a document which needs to be searched 
+let searchRegion = FireTile(precision: .p0_01).createSearchRegion(
+    latitude: latRandom,
+    longitude: longRandom
+)
   
+var document = [String: Any]()
+document["searchRegion"] = searchRegion
+// document["myField"] = "Some value" // add your field as needed
+ref.addDocument(data: document)
+    
+...
+...
+      
+// Searching for documents nearby
+let locationTile = FireTile(precision: .p0_01).location(coordinate: coordinate)
+db.collection("MyCollection")
+   .whereField("searchRegion", arrayContains: locationTile)
+   .getDocuments { snapshot, error in
+      if let error = error {
+         print(error)
+      } else {
+        for document in snapshot!.documents {
+          // ...
+        }
+      }
+    }
+  ```
