@@ -1,5 +1,14 @@
 # FireTiles
-iOS Geo Queries for [Firebase Firestore](https://firebase.google.com/docs/firestore/) 
+iOS Geo Queries for [Firebase Firestore](https://firebase.google.com/docs/firestore/)
+
+> **⚠️ This library is no longer actively maintained (last updated: March 2019).**
+>
+> Since this was written, Firebase has released official solutions that supersede this approach:
+> - **[GeoFirestore for iOS](https://github.com/imperiumlabs/GeoFirestore-iOS)** — a well-maintained library using geo hashes.
+> - **[Firebase Extensions: Geo Queries](https://extensions.dev)** — a first-party Firebase Extension that handles geo indexing and querying without custom code.
+> - Firestore's **[Vector Search](https://firebase.google.com/docs/firestore/vector-search)** (GA 2024) adds richer spatial query infrastructure directly to the SDK.
+>
+> FireTiles is kept here for reference and as a demonstration of the tile-based approach. For new projects, please use one of the solutions above.
 
 Currently (March 6th, 2019) Firebase Firestore still does not support geo location queries like "give me all documents near by this location". *FireTiles* trys to add this missing feature in a really simple and straightforward way.
 
